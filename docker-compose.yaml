@@ -1,6 +1,8 @@
 version: "3.3"
 services:
   proxy:
+    depends_on: 
+      - app
     image: nginx
     ports:
       - "80:80"
@@ -12,6 +14,8 @@ services:
 
   app:
     build: app/.
+    depends_on: 
+      - db
     ports:
       - "5000:5000"
     networks:
@@ -19,16 +23,21 @@ services:
       - backend
   
   db:
-    mongo:
     image: mongo
     restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+    ports: 
+      - "27017:27017"
+    # environment:
+    #   MONGO_INITDB_ROOT_USERNAME: root
+    #   MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - mongo_vol:/data/db
+    networks:
+      - backend
 
 networks:
   backend:
   frontend:
 
-# volumes:
-#   app/templates:
+volumes:
+  mongo_vol:
