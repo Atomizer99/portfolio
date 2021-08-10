@@ -1,8 +1,8 @@
 from flask import Flask,request,render_template, redirect ,url_for, send_from_directory,Response,jsonify
-from flask_pymongo import PyMongo
+#from flask_pymongo import PyMongo
 
-app.config["MONGO_URI"] = "mongodb://localhost:27017/myDatabase"
-mongo = PyMongo(app)
+#app.config["MONGO_URI"] = "mongodb://localhost:27017/myDatabase"
+#mongo = PyMongo(app)
 
 app = Flask(__name__)
 
