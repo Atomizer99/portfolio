@@ -2,7 +2,7 @@ FROM python:3.8.11-alpine3.14
 
 
 #EXPOSE 5000
-COPY . /app
+COPY ./app/ /app
 WORKDIR /app
 RUN pip3 install -r requirements.txt
 RUN chmod 777 entry-point.sh
