@@ -4,15 +4,18 @@
         <title>{% block title %}{% endblock %}</title>
     </head>
     <body>
-        <h1>Hello! The purpose of this app is to be able to tell 
-            you about your cloric intake!
+        <h1>Welcome to CaloCalc!<br>
+            The purpose of this app is to show you the amount of calories you need to consume in a day,<br>
+            and your BMI (Basal Metabolic Rate).
         </h1>
         <h2>
-            <form action="/action_page.php" method="post">
+            <form action="/calculate" method="post">
                 <label for="fname">First name:</label>
                 <input type="text" id="fname" name="fname"><br>
                 <label for="lname">Last name:</label>
                 <input type="text" id="lname" name="lname"><br>
+                <label for="Age">Age:</label>
+                <input type="text" id="Age" name="Age"><br>
                 <label for="Sex">Sex:</label>
                 <select name="Sex" id="Sex">
                   <option value="Male">Male</option>
