@@ -1,40 +1,43 @@
-version: "3"
+version: "3.3"
 services:
-    dev:
-        image: python:3.8.11-alpine3.14
-        command: sleep inf
-        volumes:
-        - ./calocalc/app:/app
-        - ssh:/root/.ssh
+  proxy:
+    depends_on: 
+      - app
+    image: nginx
+    ports:
+      - "80:80"
+    volumes: 
+      - ./proxy/nginx.conf:/etc/nginx/nginx.conf
+      - ./app/templates:/usr/share/nginx/html
+    networks: 
+      - frontend
 
-    gitlab:
-        image: gitlab/gitlab-ce:13.12.4-ce.0
-        ports: 
-            - "80:80"
-        volumes:
-            - gl-config:/etc/gitlab
-            - gl-logs:/var/log/gitlab
-            - gl-data:/var/opt/gitlab
+  app:
+    build: .
+    depends_on: 
+      - db
+    ports:
+      - "5000:5000"
+    networks:
+      - frontend
+      - backend
+  
+  db:
+    image: mongo
+    restart: always
+    ports: 
+      - "27017:27017"
+    # environment:
+    #   MONGO_INITDB_ROOT_USERNAME: root
+    #   MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - mongo_vol:/data/db
+    networks:
+      - backend
 
-    jenkins:
-        image: jenkins/jenkins
-        ports:
-            - "8080:8080"
-        volumes:
-            - jenkins_home:/var/jenkins_home
-            - /usr/bin/docker:/usr/bin/docker
-            - /var/run/docker.sock:/var/run/docker.sock
-
-    # artifactory:
-    #     image: docker.bintray.io/jfrog/artifactory-oss:6.16.0
-    #     ports:
-    #         - "8081:8081"
-    #     volumes:
-    #         - "art-data:/var/opt/jfrog/artifactory"
+networks:
+  backend:
+  frontend:
 
 volumes:
-  jenkins_home:
-  gl-config:
-  gl-logs:
-  gl-data:
-  ssh:
+  mongo_vol:
